@@ -1,6 +1,7 @@
 # Maintainer: RoboMico <robomico at outlook dot com>
 
 pkgname=classisland
+_appname=cn.classisland.app
 pkgver=1.7.103.0
 pkgrel=1
 pkgdesc="Class schedule displaying tool for interactive whiteboards in classrooms. (Latest release)"
@@ -30,16 +31,16 @@ prepare () {
 }
 build() {
     cd "${srcdir}/ClassIsland/ClassIsland.Desktop"
-    mkdir -p ./_output/classisland
-    dotnet build -c Release -o ./_output/classisland
+    mkdir -p ./_output/${pkgname}
+    dotnet build -c Release -o ./_output/${pkgname}
 }
 package() {
     mkdir -p "${pkgdir}/opt" "${pkgdir}/usr/bin"
-    cp -r "${srcdir}/ClassIsland/ClassIsland.Desktop/_output/classisland" "${pkgdir}/opt"
-    printf "deb" > "${pkgdir}/opt/classisland/PackageType"
-    install -Dm644 "${srcdir}/ClassIsland/ClassIsland/Assets/AppLogo_AppLogo.svg" "${pkgdir}/usr/share/pixmaps/${pkgname}.svg"
-    install -Dm644 "${srcdir}/ClassIsland/ClassIsland/Assets/ShortcutTemplates/cn.classisland.app.desktop" "${pkgdir}/usr/share/applications/cn.classisland.app.desktop"
-    sed -i "s/{0}/${pkgver}/" "${pkgdir}/usr/share/applications/cn.classisland.app.desktop"
-    sed -i 's/{1}/\/usr\/bin\/classisland/' "${pkgdir}/usr/share/applications/cn.classisland.app.desktop"
+    cp -r "${srcdir}/ClassIsland/ClassIsland.Desktop/_output/${pkgname}" "${pkgdir}/opt"
+    printf "deb" > "${pkgdir}/opt/${pkgname}/PackageType"
+    install -Dm644 "${srcdir}/ClassIsland/ClassIsland/Assets/AppLogo_AppLogo.svg" "${pkgdir}/usr/share/icons/hicolor/scalable/apps/${pkgname}.svg"
+    install -Dm644 "${srcdir}/ClassIsland/ClassIsland/Assets/ShortcutTemplates/${_appname}.desktop" "${pkgdir}/usr/share/applications/${_appname}.desktop"
+    sed -i "s/{0}/${pkgver}/" "${pkgdir}/usr/share/applications/${_appname}.desktop"
+    sed -i "s/{1}/\/usr\/bin\/${pkgname}/" "${pkgdir}/usr/share/applications/${_appname}.desktop"
     install -Dm755 "${srcdir}/${pkgname}.sh" "${pkgdir}/usr/bin/${pkgname}"
 }
